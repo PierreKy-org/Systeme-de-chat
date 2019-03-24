@@ -14,6 +14,8 @@ class Serveurclient(Thread):
 
     def run(self):
         nom = self.getName()
+
+        #DEMANDE LE PSEUDO A LA PREMIERE CONNEXION
         premiere_connexion = True
         while premiere_connexion:
             try :
@@ -26,12 +28,14 @@ class Serveurclient(Thread):
                 premiere_connexion = False
             except :
                del conn_client[nom]
+
+        #RECEPTION ET ENVOI DE MESSAGE
         while True:
             try :
                 message_recu = self.connexion.recv(1024).decode("Utf8")
                 if message_recu == "FIN":
                     break
-                message = "%s > %s" % (nom, message_recu)
+                message = "%s > %s" % (pseudo_client[nom], message_recu)
                 print(message)
                 for cle in conn_client:
                     if cle != nom:
