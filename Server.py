@@ -17,8 +17,9 @@ class Serveurclient(Thread):
         premiere_connexion = True
         while premiere_connexion:
             try :
-                pseudo_client = self.connexion.recv(1024).decode("Utf8")
-                msg="Bonjour %s ! \n" % (pseudo_client)
+                pseudo_client[nom] = self.connexion.recv(1024).decode("Utf8")
+                print(pseudo_client[nom])
+                msg="Bonjour %s ! \n" % (pseudo_client[nom])
                 for cle in conn_client:
                     if cle == nom:
                         conn_client[cle].send(msg.encode("Utf8"))
@@ -39,6 +40,7 @@ class Serveurclient(Thread):
                 del conn_client[nom]
         self.connexion.close()
         del conn_client[nom]
+        del pseudo_client[nom]
         print("Client %s déconnecté" % nom)
 
 
@@ -54,6 +56,7 @@ print("Serveur prêt, en attente de requêtes ...")
 mySocket.listen(5)
 
 conn_client = {}
+pseudo_client = {}
 while 1:
     connexion, adresse = mySocket.accept()
     th = Serveurclient(connexion)
