@@ -5,4 +5,4 @@
 
 <img src='https://img.shields.io/badge/Super Master-Luclys-red.svg?logo=wolfram&logoColor=blue&style=popout' title='SuperMaster Luclys Shield'/></a>
 <img src='https://img.shields.io/badge/Super Easter-Amarante-success.svg?logo=envato&logoColor=pink&style=popout' title='SuperEaster Amarante Shield'/></a>
-<img src='https://img.shields.io/badge/Super Mister-Zorrino-important.svg?logo=matternet&logoColor=informational&style=popout' title='SuperMister Zorrino Shield'/></a>
+<img src='https://img.shields.io/badge/Super Mister-Zorrino-important.svg?logo=matternet&logoColor=9cf&style=popout' title='SuperMister Zorrino Shield'/></a>
