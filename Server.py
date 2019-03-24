@@ -11,24 +11,20 @@ class Serveurclient(Thread):
     def __init__(self, connexion):
         Thread.__init__(self)
         self.connexion = connexion
-
     def run(self):
         nom = self.getName()
-
         #DEMANDE LE PSEUDO A LA PREMIERE CONNEXION
         premiere_connexion = True
         while premiere_connexion:
             try :
                 pseudo_client[nom] = self.connexion.recv(1024).decode("Utf8")
-                print(pseudo_client[nom])
                 msg="Bonjour %s ! \n" % (pseudo_client[nom])
                 for cle in conn_client:
                     if cle == nom:
                         conn_client[cle].send(msg.encode("Utf8"))
                 premiere_connexion = False
-            except :
-               del conn_client[nom]
-
+            except ConnectionResetError:
+                break
         #RECEPTION ET ENVOI DE MESSAGE
         while True:
             try :
@@ -40,14 +36,15 @@ class Serveurclient(Thread):
                 for cle in conn_client:
                     if cle != nom:
                         conn_client[cle].send(message.encode("Utf8"))
-            except :
-                del conn_client[nom]
+            except ConnectionResetError:
+                break
         self.connexion.close()
         del conn_client[nom]
-        del pseudo_client[nom]
-        print("Client %s déconnecté" % nom)
-
-
+        try :
+            print("%s s'est déconnecté" % pseudo_client[nom])
+            del pseudo_client[nom]
+        except KeyError:
+            print("L'individu s'est déconnecté avant de rentrer son pseudo !")
 
 #INITIALISE LE SERVEUR ET ATTEND UNE CONNEXION ENTRANTE
 mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -67,7 +64,6 @@ while 1:
     th.start()
     it = th.getName()
     conn_client[it] = connexion
-    nom_client = []
     print("Client %s connecté, adresse IP %s, port %s" % (it, adresse[0], adresse[1]))
 
     msg="Vous etes connecté. Entrez votre pseudo \n"
