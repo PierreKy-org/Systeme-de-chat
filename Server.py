@@ -14,6 +14,17 @@ class Serveurclient(Thread):
 
     def run(self):
         nom = self.getName()
+        premiere_connexion = True
+        while premiere_connexion:
+            try :
+                pseudo_client = self.connexion.recv(1024).decode("Utf8")
+                msg="Bonjour %s ! \n" % (pseudo_client)
+                for cle in conn_client:
+                    if cle == nom:
+                        conn_client[cle].send(msg.encode("Utf8"))
+                premiere_connexion = False
+            except :
+               del conn_client[nom]
         while True:
             try :
                 message_recu = self.connexion.recv(1024).decode("Utf8")
