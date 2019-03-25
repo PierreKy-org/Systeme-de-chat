@@ -2,12 +2,13 @@
 import socket
 from threading import Thread
 import sys
-from InterfaceC import *
 host="127.0.0.1"
 port = 15555
 #ON RAJOUTE LA VAR GLOBALE POUR FAIRE UNE BOUCLE ET RECUPERER LE PSEUDO
-global connaitre_pseudo 
+global connaitre_pseudo
+global message_tempo
 connaitre_pseudo = True
+
 class ClientRecevoir(Thread):
     def __init__(self, connexion):
         Thread.__init__(self)
@@ -24,25 +25,39 @@ class ClientEnvoi(Thread):
         self.connexion = connexion
 
     def run(self):
+        global connaitre_pseudo
 	#ICI LA BOUCLE
-        global connaitre_pseudo 
+        global message_envoi
         while connaitre_pseudo:
             message_envoi = pseudo1
             self.connexion.send(message_envoi.encode("Utf8"))
             connaitre_pseudo = False
+        global message_tempo
+        message_tempo = pseudo1
         while 1:
-            message_envoi = input("")
-            if message_envoi == "FIN":
+            #ON PEUT PAS REGARDER H24 message_envoi SINON CA VA SPAM LE MEME MESSAGE 
+            #DONC ON VERIFIE SI message_envoi == message_tempo
+            #SI C'EST LE CAS ON SKIP ET LA BOUCLE RECOMMENCE
+            #SINON ON ENVOI LE MSG AU SERVEUR ET ON DIT A message_tempo D'ETRE EGALE A message_envoi
+            #CE QUI RAMENE A LA CONDITION POUR PAS SPAMMER LE SERVEUR 
+            if message_envoi != message_tempo:
+                if message_envoi == "FIN":
+                    self.connexion.send(message_envoi.encode("Utf8"))
+                    print("Client arrêté. Connexion interrompue.")
+                    self.connexion.close()
+                    sys.exit(0)
                 self.connexion.send(message_envoi.encode("Utf8"))
-                print("Client arrêté. Connexion interrompue.")
-                self.connexion.close()
-                sys.exit(0)
-            self.connexion.send(message_envoi.encode("Utf8"))
+                message_tempo = message_envoi
 
+                
+#RECEPTIONNE LE MESSAGE ET LE STOCKE DANS LA VAR message_envoi
+def EnvoiClient(message):
+    global message_envoi
+    message_envoi = message
+    
 def ConnexionAuServeur(pseudo):
 	global pseudo1
 	pseudo1 = pseudo
-	print("hey")
 	connexion = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	try:
 	  connexion.connect((host, port))
@@ -57,4 +72,4 @@ def ConnexionAuServeur(pseudo):
 	print("les threads sont lancés")
 
 if __name__ == '__main__':
-    ConnexionAuServeur()
+    InterfaceC.Chat()
