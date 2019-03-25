@@ -25,6 +25,7 @@ class ClientEnvoi(Thread):
 
     def run(self):
 	#ICI LA BOUCLE
+        global connaitre_pseudo 
         while connaitre_pseudo:
             message_envoi = pseudo1
             self.connexion.send(message_envoi.encode("Utf8"))
