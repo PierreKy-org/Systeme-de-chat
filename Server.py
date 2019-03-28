@@ -4,7 +4,7 @@ import socket
 from threading import Thread
 import sys
 host="127.0.0.1"
-port = 15555
+port = 15559
 
 
 class Serveurclient(Thread):
@@ -25,6 +25,7 @@ class Serveurclient(Thread):
                 premiere_connexion = False
             except ConnectionResetError:
                 break
+
         #RECEPTION ET ENVOI DE MESSAGE
         while True:
             try :
