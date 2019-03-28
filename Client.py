@@ -2,11 +2,12 @@
 import socket
 from threading import Thread
 import sys
-host="127.0.0.1"
-port = 15559
+host="77.140.249.58"
+port = 15555
 #ON RAJOUTE LA VAR GLOBALE POUR FAIRE UNE BOUCLE ET RECUPERER LE PSEUDO
 global connaitre_pseudo
 global message_tempo
+global response
 connaitre_pseudo = True
 
 class ClientRecevoir(Thread):
@@ -15,6 +16,7 @@ class ClientRecevoir(Thread):
         self.connexion = connexion
 
     def run(self):
+        global response
         while 1:
             try:
                 response = self.connexion.recv(1024).decode("Utf8")
@@ -61,7 +63,10 @@ class ClientEnvoi(Thread):
 def EnvoiClient(message):
     global message_envoi
     message_envoi = message
-    
+
+def recevoirClient():
+    global response
+    return response
 def QuitClient():
     global message_envoi
     message_envoi = "FIN"
