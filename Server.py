@@ -35,8 +35,7 @@ class Serveurclient(Thread):
                 message = "%s > %s" % (pseudo_client[nom], message_recu)
                 print(message)
                 for cle in conn_client:
-                    if cle != nom:
-                        conn_client[cle].send(message.encode("Utf8"))
+                    conn_client[cle].send(message.encode("Utf8"))
             except ConnectionResetError:
                 break
         self.connexion.close()
