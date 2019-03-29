@@ -20,18 +20,21 @@ def interface():
 
             def run(self):
                 global boul
+                Flux = Frame(fenetre, width = 800, height = 500, bg = "red")
+                Flux.grid_propagate(0)
+                Flux.grid(row = 0, column = 0)
                 boul = 1
                 print("thread lancé")
                 texte = StringVar()
                 message_tempo = ""
-                Affichage = Label(fenetre, textvariable=texte)
+                Affichage = Label(Flux, textvariable=texte, bg = "red")
                 while boul:
                     try:
                         message_recu = recevoirClient()
                         if message_recu != message_tempo:
                             texte.set(message_recu)
                             Affichage.configure(textvariable=texte)
-                            Affichage.pack()
+                            Affichage.grid(row = 1, column = 1)
                             message_tempo = message_recu
                     except :
                         print("impossible de trouver le texte")
@@ -43,10 +46,15 @@ def interface():
                 
         def Chat():
             global thread1
-            EntreeMsg = Entry(fenetre, width=30)
-            EntreeMsg.pack()
-            Button_envoyer = Button(fenetre, text="Envoyer", command=partial(envoi,EntreeMsg))
-            Button_envoyer.pack()
+            
+            Envoi = Frame(fenetre,width = 270, height = 27, bg ="green")
+            Envoi.grid_propagate(0)
+            Envoi.grid(row=1, column = 0)
+            
+            EntreeMsg = Entry(Envoi, width=30)
+            EntreeMsg.grid(row = 0, column = 0, padx = 10)
+            Button_envoyer = Button(Envoi, text="Envoyer", command=partial(envoi,EntreeMsg))
+            Button_envoyer.grid(row = 0, column = 1, padx = 10)
             thread1 = InterfaceRecu()
             thread1.start()
         def Entrepseudo():
