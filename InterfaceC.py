@@ -24,17 +24,19 @@ def interface():
                 Flux.grid_propagate(0)
                 Flux.grid(row = 0, column = 0)
                 boul = 1
-                print("thread lancé")
                 texte = StringVar()
                 message_tempo = ""
-                Affichage = Label(Flux, textvariable=texte, bg = "red")
+                ListeTest = []
+                i = 0
                 while boul:
                     try:
                         message_recu = recevoirClient()
                         if message_recu != message_tempo:
                             texte.set(message_recu)
-                            Affichage.configure(textvariable=texte)
-                            Affichage.grid(row = 1, column = 1)
+                            ListeTest.append(Label(Flux, text=message_recu, bg = "blue"))
+                            for j in ListeTest:
+                                j.grid(row = i, column = 1)
+                                i += 1
                             message_tempo = message_recu
                     except :
                         print("impossible de trouver le texte")
@@ -43,14 +45,14 @@ def interface():
         #SE LIE A LA FONCTION EnvoiClient(message)
         def envoi(message):
             EnvoiClient(message.get())
-                
+
         def Chat():
             global thread1
-            
+
             Envoi = Frame(fenetre,width = 270, height = 27, bg ="green")
             Envoi.grid_propagate(0)
             Envoi.grid(row=1, column = 0)
-            
+
             EntreeMsg = Entry(Envoi, width=30)
             EntreeMsg.grid(row = 0, column = 0, padx = 10)
             Button_envoyer = Button(Envoi, text="Envoyer", command=partial(envoi,EntreeMsg))
