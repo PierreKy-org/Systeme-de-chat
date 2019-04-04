@@ -4,7 +4,7 @@ import socket
 from threading import Thread
 import sys
 host="127.0.0.1"
-port = 15559
+port = 15555
 
 
 class Serveurclient(Thread):
@@ -65,6 +65,3 @@ while 1:
     it = th.getName()
     conn_client[it] = connexion
     print("Client %s connecté, adresse IP %s, port %s" % (it, adresse[0], adresse[1]))
-
-    msg="Vous etes connecté. Entrez votre pseudo \n"
-    connexion.send(msg.encode("Utf8"))
