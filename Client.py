@@ -1,5 +1,6 @@
 #POUVOIR RECEVOIR LES MSG EN DIRECT 
 import socket
+import time
 from threading import Thread
 import sys
 host="127.0.0.1"
@@ -24,6 +25,7 @@ class ClientRecevoir(Thread):
             except OSError:
                 print("Erreur d'os\n")
                 break
+	    time.sleep(1)
 class ClientEnvoi(Thread):
     def __init__(self, connexion):
         Thread.__init__(self)
@@ -57,7 +59,7 @@ class ClientEnvoi(Thread):
             except KeyboardInterrupt : 
                 self.connexion.close()
                 sys.exit(0)
-
+	    time.sleep(1)
                 
 #RECEPTIONNE LE MESSAGE ET LE STOCKE DANS LA VAR message_envoi
 def EnvoiClient(message):
