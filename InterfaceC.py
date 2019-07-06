@@ -1,6 +1,7 @@
 # coding: utf-8
 
 import socket
+import time
 from threading import Thread
 import sys
 from tkinter import *
@@ -41,7 +42,8 @@ def interface():
                     except :
                         print("impossible de trouver le texte")
                         break
-
+                    time.sleep(1)
+                
         #SE LIE A LA FONCTION EnvoiClient(message)
         def envoi(message):
             EnvoiClient(message.get())
